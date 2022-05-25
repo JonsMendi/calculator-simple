@@ -1,0 +1,24 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "monospace", sans-serif;
+}
+
+section {
+    background-color: rgb(211, 180, 133);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: red;
+    width: 90%;
+    max-width: 400px;
+}
