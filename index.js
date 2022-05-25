@@ -9,7 +9,7 @@ const equalButton = document.querySelector('.equal');
 let screenOne = '';
 let screenTwo = '';
 let result = null;
-let lastOperator = false;
+let operator = '+';
 let dot = false;
 
 //number button click
@@ -29,7 +29,53 @@ allNumbers.forEach( number => {
 })
 
 //operator numbers click
+function add(number1, number2) {
+    let result = number1 + number2;
+    return result;
+}
 
+function subtract(number1, number2) {
+    let result = number1 - number2;
+    return result;
+}
+
+function multiply(number1, number2) {
+    let result = number1 * number2;
+    return result;
+}
+
+function divide(number1, number2) {
+    if (number2 === 0) {
+        return 'You cant divide by 0'
+    } else {
+        let result = number1 / number2
+        return result
+    }
+}
+
+
+function calculate() {
+    let number1 = parseInt(allNumbers.value);
+    let number2 = parseInt(allNumbers.value);
+
+
+    switch(operator) {
+        case '+':
+            result = add(number1, number2);
+            break;
+        case '-':
+            result = subtract(number1, number2);
+            console.log('was subtracted')
+            break;
+        case '*':
+            result = multiply(number1, number2);
+            break;
+        case '/':
+            result = divide(number1, number2);
+            break;
+    }
+    document.querySelector('.display-1').innerText = result;
+}
 //delete button click
 
 //equal button click
