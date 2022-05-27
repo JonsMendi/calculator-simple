@@ -1,7 +1,9 @@
 const displayScrn1 = document.querySelector('.display-1');
 const displayScrn2 = document.querySelector('.display-2');
 const displayResult = document.querySelector('.display-result');
-const allNumbers = document.querySelectorAll('.button');
+const allNumbers = document.querySelectorAll('.number');
+const clearScreen = document.querySelector('.all-clear');
+const clearLastNumber = document.querySelector('.last-clear');
 const allOperators = document.querySelectorAll('.operator');
 const dotButton = document.querySelector('.dot');
 const equalButton = document.querySelector('.equal');
@@ -28,39 +30,34 @@ allNumbers.forEach( number => {
     } )
 })
 
-//operator numbers click
-function add(number1, number2) {
-    let result = number1 + number2;
-    return result;
-}
 
-function subtract(number1, number2) {
-    let result = number1 - number2;
-    return result;
-}
+//delete button click
 
-function multiply(number1, number2) {
-    let result = number1 * number2;
-    return result;
-}
-
-function divide(number1, number2) {
-    if (number2 === 0) {
-        return 'You cant divide by 0'
-    } else {
-        let result = number1 / number2
-        return result
+//delete everything
+clearScreen.addEventListener('click', (e) => {
+    if ( e.target.innerText === 'C') {
+        screenOne = '';
+        displayScrn1.innerText = 0;
+        screenTwo = '';
+        displayScrn2.innerText = 0;
+        result = '';
+        displayResult.innerText = '0';
     }
-}
+})
 
+clearLastNumber.addEventListener('click', (e) => {
+    //clicking in 'CE' removes the last number
+    displayScrn2.innerText = displayScrn2.innerText.slice(0, -1);
+    console.log({clearLastNumber}) 
+    return;
+    
+})
 
-function calculate() {
-    let number1 = parseInt(allNumbers.value);
-    let number2 = parseInt(allNumbers.value);
-
-
-    switch(operator) {
-        case '+':
+//operator numbers click
+allOperators.forEach( operator => {
+    operator.addEventListener('click', (result) => {
+        switch(operator) {
+            case '+':
             result = add(number1, number2);
             break;
         case '-':
@@ -73,9 +70,20 @@ function calculate() {
         case '/':
             result = divide(number1, number2);
             break;
-    }
-    document.querySelector('.display-1').innerText = result;
-}
-//delete button click
+        case '=':
+            result = eval(result.innerText);
+            
+            break;    
+        }
+
+        screenOne = result;
+        displayScrn1.innerHTML = screenOne
+        console.log({result});
+    })
+} )
+
+
+
+
 
 //equal button click
