@@ -1,5 +1,5 @@
+
 const displayScrn1 = document.querySelector('.display-1');
-const displayScrn2 = document.querySelector('.display-2');
 const displayResult = document.querySelector('.display-result');
 const allNumbers = document.querySelectorAll('.number');
 const clearScreen = document.querySelector('.all-clear');
@@ -8,8 +8,7 @@ const allOperators = document.querySelectorAll('.operator');
 const dotButton = document.querySelector('.dot');
 const equalButton = document.querySelector('.equal');
 
-let screenOne = '';
-let screenTwo = '';
+let screen = '';
 let result = null;
 let operator = '';
 let dot = false;
@@ -24,9 +23,9 @@ allNumbers.forEach( number => {
             return;
         }
         //When the user presses the button, the content is saved in screeTwo variable.
-        screenTwo += e.target.innerHTML;
+        screen += e.target.innerHTML;
         //After the screenTwo content is connected to the const (displayScrn2) that is querySelecting the actual node (class: display-2)
-        displayScrn2.innerHTML = screenTwo;
+        displayScrn1.innerHTML = screen;
     } )
 })
 
@@ -36,10 +35,8 @@ allNumbers.forEach( number => {
 //delete everything
 clearScreen.addEventListener('click', (e) => {
     if ( e.target.innerText === 'C') {
-        screenOne = '';
+        screen = '';
         displayScrn1.innerText = 0;
-        screenTwo = '';
-        displayScrn2.innerText = 0;
         result = '';
         displayResult.innerText = '0';
     }
@@ -47,43 +44,64 @@ clearScreen.addEventListener('click', (e) => {
 
 clearLastNumber.addEventListener('click', (e) => {
     //clicking in 'CE' removes the last number
-    displayScrn2.innerText = displayScrn2.innerText.slice(0, -1);
+    displayScrn1.innerText = displayScrn1.innerText.slice(0, -1);
     console.log({clearLastNumber}) 
     return;
     
 })
 
 //operator numbers click
-allOperators.forEach( operator => {
-    operator.addEventListener('click', (result) => {
-        switch(operator) {
-            case '+':
-            result = add(number1, number2);
-            break;
-        case '-':
-            result = subtract(number1, number2);
-            console.log('was subtracted')
-            break;
-        case '*':
-            result = multiply(number1, number2);
-            break;
-        case '/':
-            result = divide(number1, number2);
-            break;
-        case '=':
-            result = eval(result.innerText);
-            
-            break;    
-        }
-
-        screenOne = result;
-        displayScrn1.innerHTML = screenOne
-        console.log({result});
+allOperators.forEach( operation => {
+    operation.addEventListener('click', (e) => {
+      if (!screen)
+          result;
+      dot = false;
+      const operationName = e.target.innerText;
+      if ( screen && operator ) {
+          mathCalculator();
+      } else {
+          result = parseFloat(screen);
+      }
+      updateResultScreen(operationName);
+      operator = operationName;
     })
-} )
+});
 
+function updateResultScreen (name = '') {
+    screen += '' + name + '';
+    displayScrn1.innerText = screen;
+    displayResult.innerText = result;
+}
 
+function mathCalculator() { 
+     /**
+      * Under, parseFloat need to be used to convert the string into number and make the operation.
+      * This is needed because the clicked number is being saved in the variable 'screen' that contains strings.
+     */
+    if ( operator === '+') {
+        result = parseFloat(result) + parseFloat(screen);
+    } else if ( operator === '-' ) {
+        result = parseFloat(result) - parseFloat(screen);
+    } else if ( operator === 'x' ) {
+        result = parseFloat(result) * parseFloat(screen);
+    } else if ( operator === '/' ) {
+        result = parseFloat(result) / parseFloat(screen);
+    } else if ( operator === '%' ) {
+        result = parseFloat(result) % parseFloat(screen);
+    }
+}
 
 
 
 //equal button click
+
+equalButton.addEventListener('click', (e) => {
+    if (!screen) return;
+    dot = false;
+    mathCalculator();
+    updateResultScreen();
+    displayScrn1.innerText = '';
+    displayResult.innerText = result;
+    screen = '';
+    
+})
