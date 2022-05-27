@@ -9,20 +9,20 @@ const equalButton = document.querySelector('.equal');
 let screenOne = '';
 let screenTwo = '';
 let result = null;
-let operator = '+';
+let operator = '';
 let dot = false;
 
 //number button click
 allNumbers.forEach( number => {
     number.addEventListener('click', (e) => {
         console.log(number)
-        if (e.target.innerText === '.' && !false) {
+        if (e.target.innerText === '.' && !dot) {
             dot = true;
-        } else if (e.target.innerText === '.' && false) {
+        } else if (e.target.innerText === '.' && dot) {
             return;
         }
         //When the user presses the button, the content is saved in screeTwo variable.
-        screenTwo = e.target.innerHTML;
+        screenTwo += e.target.innerHTML;
         //After the screenTwo content is connected to the const (displayScrn2) that is querySelecting the actual node (class: display-2)
         displayScrn2.innerHTML = screenTwo;
     } )
