@@ -1,6 +1,5 @@
 
 const displayScrn1 = document.querySelector('.display-1');
-const displayResult = document.querySelector('.display-result');
 const allNumbers = document.querySelectorAll('.number');
 const clearScreen = document.querySelector('.all-clear');
 const clearLastNumber = document.querySelector('.last-clear');
@@ -8,100 +7,96 @@ const allOperators = document.querySelectorAll('.operator');
 const dotButton = document.querySelector('.dot');
 const equalButton = document.querySelector('.equal');
 
-let screen = '';
-let result = null;
-let operator = '';
-let dot = false;
+let firstNumber = ''; // Old Number
+let secondNumber = ''; // Current Number
+let resultNumberScreen; // Result Screen
+let operatorSelected;
+
+
 
 //number button click
-allNumbers.forEach( number => {
-    number.addEventListener('click', (e) => {
-        console.log(number)
-        if (e.target.innerText === '.' && !dot) {
-            dot = true;
-        } else if (e.target.innerText === '.' && dot) {
-            return;
-        }
-        //When the user presses the button, the content is saved in screeTwo variable.
-        screen += e.target.innerHTML;
-        //After the screenTwo content is connected to the const (displayScrn2) that is querySelecting the actual node (class: display-2)
-        displayScrn1.innerHTML = screen;
-    } )
-})
+for (let i = 0, l = allNumbers.length; i < l; i++) {
+    allNumbers[i].onclick = setNumber
+}
 
+function setNumber ()  {
+        if (resultNumberScreen) {
+            firstNumber = this.getAttribute('data-number');
+            resultNumberScreen = ''
+        } else if (!resultNumberScreen) {
+            firstNumber += this.getAttribute('data-number');
+        }
+        //After the screenTwo content is connected to the const (displayScrn2) that is querySelecting the actual node (class: display-2)
+        displayScrn1.innerHTML = firstNumber;
+        console.log('Result screen', displayScrn1);
+}
+
+/**
+ * Operation button click functionality
+ */
+
+for (let i = 0, l = allOperators.length; i < l; i++) {
+    allOperators[i].onclick = moveNumber;
+}
+
+function moveNumber() {
+    secondNumber = firstNumber;
+    firstNumber = '';
+    operatorSelected = this.getAttribute('data-operator');
+    console.log('operator clicked?', operatorSelected);
+    // set it in the equal button
+    equalButton.setAttribute('data-result', '');
+    console.log('equal button clicked?', equalButton); 
+}
+
+/**
+ * Equal Button click functionality
+ */
+
+equalButton.onclick = displayNumber;
+
+function displayNumber () {
+
+    //pass strings saved in variables into numbers
+    firstNumber = parseFloat(firstNumber);
+    secondNumber = parseFloat(secondNumber);
+
+    switch(operatorSelected) {
+        case 'plus':
+            resultNumberScreen = secondNumber + firstNumber;
+            break;
+        case 'subtract':
+            resultNumberScreen = secondNumber - firstNumber;
+            break;
+        case 'multiply':
+            resultNumberScreen = secondNumber * firstNumber;
+            break;
+        case 'divide':
+            resultNumberScreen = secondNumber / firstNumber;
+            break;
+        case 'percentage':
+            resultNumberScreen = secondNumber % firstNumber;
+
+        default:
+            resultNumberScreen = firstNumber;
+    }
+
+    displayScrn1.innerHTML = resultNumberScreen;
+    equalButton.setAttribute('data-result', resultNumberScreen);
+
+    secondNumber = 0;
+    firstNumber = resultNumberScreen;
+}
 
 //delete button click
 
-//delete everything
-clearScreen.addEventListener('click', (e) => {
-    if ( e.target.innerText === 'C') {
-        screen = '';
-        displayScrn1.innerText = 0;
-        result = '';
-        displayResult.innerText = '0';
-    }
-})
-
-clearLastNumber.addEventListener('click', (e) => {
-    //clicking in 'CE' removes the last number
-    displayScrn1.innerText = displayScrn1.innerText.slice(0, -1);
-    console.log({clearLastNumber}) 
+/**
+ * Delete everything.
+ * TODO: somehow, after deleting everything, it gives an error when typing new operation
+ */
+ clearScreen.addEventListener('click', (e) => {
+    displayScrn1.innerText = '0';
+    equalButton.setAttribute('data-result', resultNumberScreen)
     return;
-    
-})
-
-//operator numbers click
-allOperators.forEach( operation => {
-    operation.addEventListener('click', (e) => {
-      if (!screen)
-          result;
-      dot = false;
-      const operationName = e.target.innerText;
-      if ( screen && operator ) {
-          mathCalculator();
-      } else {
-          result = parseFloat(screen);
-      }
-      updateResultScreen(operationName);
-      operator = operationName;
-    })
-});
-
-function updateResultScreen (name = '') {
-    screen += '' + name + '';
-    displayScrn1.innerText = screen;
-    displayResult.innerText = result;
-}
-
-function mathCalculator() { 
-     /**
-      * Under, parseFloat need to be used to convert the string into number and make the operation.
-      * This is needed because the clicked number is being saved in the variable 'screen' that contains strings.
-     */
-    if ( operator === '+') {
-        result = parseFloat(result) + parseFloat(screen);
-    } else if ( operator === '-' ) {
-        result = parseFloat(result) - parseFloat(screen);
-    } else if ( operator === 'x' ) {
-        result = parseFloat(result) * parseFloat(screen);
-    } else if ( operator === '/' ) {
-        result = parseFloat(result) / parseFloat(screen);
-    } else if ( operator === '%' ) {
-        result = parseFloat(result) % parseFloat(screen);
-    }
-}
-
-
-
-//equal button click
-
-equalButton.addEventListener('click', (e) => {
-    if (!screen) return;
-    dot = false;
-    mathCalculator();
-    updateResultScreen();
-    displayScrn1.innerText = '';
-    displayResult.innerText = result;
-    screen = '';
     
 })
