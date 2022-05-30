@@ -13,33 +13,45 @@ let resultNumberScreen; // Result Screen
 let operatorSelected;
 
 
+/**
+ * Number button click functionality
+ * 
+ * TODO: set '.' limitation
+ */
 
-//number button click
+//make a loop through numbers and save it in setNumber function
 for (let i = 0, l = allNumbers.length; i < l; i++) {
     allNumbers[i].onclick = setNumber
 }
 
+
 function setNumber ()  {
         if (resultNumberScreen) {
+            // reset screen in case of result displayed
             firstNumber = this.getAttribute('data-number');
             resultNumberScreen = ''
-        } else if (!resultNumberScreen) {
+        } else {
+            // in other way, add a number
             firstNumber += this.getAttribute('data-number');
         }
-        //After the screenTwo content is connected to the const (displayScrn2) that is querySelecting the actual node (class: display-2)
+        // Then, display the value in the screen
         displayScrn1.innerHTML = firstNumber;
         console.log('Result screen', displayScrn1);
 }
 
 /**
  * Operation button click functionality
+ * 
+ * TODO: try to append all equation at the same time
  */
 
+// make a loop in the operators and save it in moveNumber
 for (let i = 0, l = allOperators.length; i < l; i++) {
     allOperators[i].onclick = moveNumber;
 }
 
 function moveNumber() {
+    //when operator clicked, pass the first number to second number, allowing to set a new number
     secondNumber = firstNumber;
     firstNumber = '';
     operatorSelected = this.getAttribute('data-operator');
@@ -53,14 +65,15 @@ function moveNumber() {
  * Equal Button click functionality
  */
 
+
 equalButton.onclick = displayNumber;
 
 function displayNumber () {
-
-    //pass strings saved in variables into numbers
+    //translate strings variables into numbers
     firstNumber = parseFloat(firstNumber);
     secondNumber = parseFloat(secondNumber);
 
+    //define operations possibilities
     switch(operatorSelected) {
         case 'plus':
             resultNumberScreen = secondNumber + firstNumber;
@@ -74,14 +87,13 @@ function displayNumber () {
         case 'divide':
             resultNumberScreen = secondNumber / firstNumber;
             break;
-        case 'percentage':
-            resultNumberScreen = secondNumber % firstNumber;
-
         default:
             resultNumberScreen = firstNumber;
     }
 
+    //display the result
     displayScrn1.innerHTML = resultNumberScreen;
+    //set the result to the equal button
     equalButton.setAttribute('data-result', resultNumberScreen);
 
     secondNumber = 0;
@@ -91,12 +103,18 @@ function displayNumber () {
 //delete button click
 
 /**
- * Delete everything.
- * TODO: somehow, after deleting everything, it gives an error when typing new operation
+ * 
  */
- clearScreen.addEventListener('click', (e) => {
-    displayScrn1.innerText = '0';
-    equalButton.setAttribute('data-result', resultNumberScreen)
-    return;
-    
-})
+
+//set the query selector to clearAll
+ clearScreen.onclick = clearAll;
+
+ function clearAll () {
+     //get all the variables nests empty
+     firstNumber = '';
+     secondNumber = '';
+     //display 0 placeholder
+     displayScrn1.innerHTML = '0';
+     //reset equal button
+     equalButton.setAttribute('data-result', resultNumberScreen);
+ }

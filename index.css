@@ -9,7 +9,7 @@ html {
 }
 
 section {
-    background-color: rgb(211, 180, 133);
+    background-color: rgb(35, 36, 39);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@ section {
 }
 
 .container {
-    background-color: rgb(144, 104, 44);
+    background-color: rgb(42, 40, 55);
     width: 90%;
     max-width: 400px;
     border-radius: 3%;
@@ -70,4 +70,8 @@ section {
 .equal {
     grid-column: 3/5;
     font-size: 30px;
+}
+
+.delete {
+    grid-column: 4/1;
 }
