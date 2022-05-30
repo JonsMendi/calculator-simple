@@ -36,15 +36,8 @@ section {
 }
 
 .display-1 {
-    font-size: 15px;
-    height: 20px;
-    overflow: hidden;
-}
-
-.display-result {
-    position: absolute;
-    left: 40px;
-    bottom: 35px;
+    font-size: 35px;
+    margin-top: 10px;
 }
 
 .all-buttons {
@@ -58,6 +51,7 @@ section {
     justify-content: center;
     align-items: center;
     padding: 25px;
+    color: red;
     transition: 0.2s;
 }
 
